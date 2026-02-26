@@ -21,37 +21,50 @@ export function MetricCard({
     critical = false,
 }: MetricCardProps) {
     return (
-        <Card className={critical ? "border-red-500 bg-red-50" : ""}>
-            <CardContent className="p-6">
-                <div className="flex justify-between items-start">
-                    <div className="space-y-2">
-                        <p className="text-sm font-medium text-slate-500">{title}</p>
-                        <h3 className={`text-3xl font-bold tracking-tight ${critical ? "text-red-700" : "text-slate-900"}`}>{value}</h3>
+        <Card className={`overflow-hidden rounded-md border shadow-sm ${critical ? "border-red-200" : "border-slate-200"}`}>
+            {/* Header Area */}
+            {critical ? (
+                <div className="bg-[#cc0000] px-4 py-2 flex justify-between items-center text-white">
+                    <div className="flex items-center space-x-1.5">
+                        {Icon && <Icon className="w-4 h-4" />}
+                        <span className="text-sm font-semibold tracking-wide">Warning</span>
                     </div>
-                    {Icon && (
-                        <div className={`p-3 rounded-lg ${critical ? "bg-red-100 text-red-600" : "bg-slate-100 text-[#0B3D91]"}`}>
-                            <Icon className="w-5 h-5" />
-                        </div>
-                    )}
+                    <span className="text-xs font-medium bg-black/20 px-2 py-0.5 rounded-sm">Just Now</span>
+                </div>
+            ) : (
+                <div className="bg-slate-50 border-b border-slate-100 px-4 py-2.5 flex items-center justify-between">
+                    <span className="text-sm font-bold text-[#1e40af] tracking-wide">{title}</span>
+                    {Icon && <Icon className="w-4 h-4 text-slate-400" />}
+                </div>
+            )}
+
+            {/* Content Area */}
+            <CardContent className={`p-4 ${critical ? "bg-[#ffege6]" : "bg-white"}`}>
+                {critical && <h4 className="text-md font-bold text-red-950 mb-1">{title}</h4>}
+
+                <div className="flex justify-between items-end mt-1">
+                    <h3 className={`text-3xl font-bold tracking-tight ${critical ? "text-red-800" : "text-slate-800"}`}>
+                        {value}
+                    </h3>
                 </div>
 
                 {(description || trendValue) && (
-                    <div className="mt-4 flex items-center text-sm">
+                    <div className="mt-3 flex items-center text-xs">
                         {trendValue && (
                             <span
-                                className={`mr-2 font-medium ${trend === "up" && critical
-                                        ? "text-red-600"
-                                        : trend === "up" && !critical
-                                            ? "text-[#138808]" // Good increase (like resolutions)
-                                            : trend === "down"
-                                                ? "text-[#138808]" // Good decrease
-                                                : "text-slate-500"
+                                className={`mr-1.5 font-bold ${trend === "up" && critical
+                                    ? "text-red-700"
+                                    : trend === "up" && !critical
+                                        ? "text-green-600"
+                                        : trend === "down"
+                                            ? "text-green-600"
+                                            : "text-slate-500"
                                     }`}
                             >
                                 {trend === "up" ? "↑" : trend === "down" ? "↓" : "−"} {trendValue}
                             </span>
                         )}
-                        {description && <span className="text-slate-500">{description}</span>}
+                        {description && <span className={`${critical ? "text-red-700/80" : "text-slate-500"}`}>{description}</span>}
                     </div>
                 )}
             </CardContent>

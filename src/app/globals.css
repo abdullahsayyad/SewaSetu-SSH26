@@ -33,8 +33,8 @@
 
 body {
   background-color: var(--background);
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: auto;
 }
 
 /* Formal Utility Classes */
@@ -42,10 +42,8 @@ body {
   .gov-card {
     background-color: var(--color-card);
     border: 1px solid var(--color-card-border);
-    border-radius: 0.5rem;
-    /* rounded-lg, not xl */
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    /* shadow-sm only */
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .gov-panel {
@@ -82,9 +80,9 @@ body {
 .leaflet-popup-tip {
   background: #FFFFFF !important;
   color: #111827 !important;
-  border: 1px solid #E5E7EB !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-  border-radius: 0.5rem !important;
+  border: 1px solid #9CA3AF !important;
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2) !important;
+  border-radius: 0 !important;
 }
 
 .leaflet-popup-content-wrapper p,
@@ -139,7 +137,7 @@ body {
 }
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -211,6 +209,7 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

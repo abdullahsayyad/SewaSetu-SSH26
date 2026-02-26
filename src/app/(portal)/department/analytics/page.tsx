@@ -63,10 +63,10 @@ export default function AnalyticsDashboard() {
 
     return (
         <div className="space-y-6 max-w-7xl mx-auto">
-            <div className="flex justify-between items-end mb-8 border-b border-slate-200 pb-4">
+            <div className="flex justify-between items-end mb-8 border-b border-[#9CA3AF] pb-4">
                 <div>
                     <h2 className="text-3xl font-bold text-[#0B3D91] tracking-tight">{department} Analytics</h2>
-                    <p className="text-slate-600 mt-1">Comprehensive data insights and SLA reporting.</p>
+                    <p className="text-slate-700 mt-1">Comprehensive data insights and SLA reporting.</p>
                 </div>
             </div>
 
@@ -102,9 +102,11 @@ export default function AnalyticsDashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
 
                 {/* 7-Day Performance Trend */}
-                <div className="bg-white p-6 border border-slate-200 shadow-sm rounded-lg">
-                    <h3 className="text-lg font-bold text-[#0B3D91] mb-6">7-Day Ticket Velocity</h3>
-                    <div className="h-[300px]">
+                <div className="bg-white border border-[#9CA3AF] overflow-hidden">
+                    <div className="p-3 border-b border-[#9CA3AF] flex justify-between items-center bg-white">
+                        <h3 className="text-lg font-bold text-[#1e40af]">7-Day Ticket Velocity</h3>
+                    </div>
+                    <div className="p-4 h-[300px]">
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={timelineData}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" vertical={false} />
@@ -122,9 +124,11 @@ export default function AnalyticsDashboard() {
                 </div>
 
                 {/* Sub-Category Distribution */}
-                <div className="bg-white p-6 border border-slate-200 shadow-sm rounded-lg">
-                    <h3 className="text-lg font-bold text-[#0B3D91] mb-6">Primary Issue Clusters</h3>
-                    <div className="h-[300px] flex items-center justify-center">
+                <div className="bg-white border border-[#9CA3AF] overflow-hidden">
+                    <div className="p-3 border-b border-[#9CA3AF] flex justify-between items-center bg-white">
+                        <h3 className="text-lg font-bold text-[#1e40af]">Primary Issue Clusters</h3>
+                    </div>
+                    <div className="p-4 h-[300px] flex items-center justify-center">
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
                                 <Pie
@@ -151,9 +155,11 @@ export default function AnalyticsDashboard() {
                 </div>
 
                 {/* Risk Level Bar Chart */}
-                <div className="bg-white p-6 border border-slate-200 shadow-sm rounded-lg lg:col-span-2">
-                    <h3 className="text-lg font-bold text-[#0B3D91] mb-6">AI Risk Assessment Breakdown</h3>
-                    <div className="h-[250px]">
+                <div className="bg-white border border-[#9CA3AF] overflow-hidden lg:col-span-2">
+                    <div className="p-3 border-b border-[#9CA3AF] flex justify-between items-center bg-white">
+                        <h3 className="text-lg font-bold text-[#1e40af]">AI Risk Assessment Breakdown</h3>
+                    </div>
+                    <div className="p-4 h-[250px]">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={riskData} layout="vertical" margin={{ left: 20 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" horizontal={false} />

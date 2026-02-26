@@ -35,9 +35,9 @@ export default function CitizenDashboard() {
 
     return (
         <div className="space-y-8 max-w-7xl mx-auto">
-            <div>
-                <h2 className="text-2xl font-bold text-[#0B3D91] tracking-tight">Citizen Dashboard</h2>
-                <p className="text-slate-600 mt-1">Overview of civic grievances in your registered locality.</p>
+            <div className="bg-white border border-[#9CA3AF] p-4">
+                <h2 className="text-xl font-bold text-[#1e40af] tracking-tight">Citizen Dashboard</h2>
+                <p className="text-sm text-slate-600 mt-0.5">Overview of civic grievances in your registered locality.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -76,38 +76,49 @@ export default function CitizenDashboard() {
 
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                 <div className="xl:col-span-2 space-y-4">
-                    <div className="flex justify-between items-end">
-                        <div>
-                            <h3 className="text-lg font-bold text-[#0B3D91]">Locality Incident Map</h3>
-                            <p className="text-sm text-slate-500">Real-time geographical distribution of reported issues.</p>
+                    <div className="bg-white border border-[#9CA3AF] overflow-hidden">
+                        <div className="p-3 border-b border-slate-200 flex justify-between items-center">
+                            <h3 className="text-lg font-bold text-[#1e40af]">Locality Incident Map</h3>
+                            <div className="flex space-x-2">
+                                <button className="p-1 text-slate-400 hover:text-[#1e40af] transition-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    {/* Wrap map in a container that forces a re-render if needed, but dynamic import handles it */}
-                    <div className="w-full bg-white p-2 border border-slate-200 shadow-sm rounded-lg">
-                        <CivicMap complaints={complaints} height="500px" />
+                        {/* Wrap map in a container that forces a re-render if needed, but dynamic import handles it */}
+                        <div className="w-full bg-slate-50 p-2">
+                            <div className="overflow-hidden border border-[#9CA3AF] h-[500px]">
+                                <CivicMap complaints={complaints} height="100%" />
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div className="space-y-4">
-                    <h3 className="text-lg font-bold text-[#0B3D91]">Recent Dockets</h3>
-                    <div className="bg-white border border-slate-200 shadow-sm rounded-lg overflow-hidden">
-                        {complaints.slice(0, 4).map((complaint) => (
-                            <div key={complaint.id} className="p-4 border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors">
-                                <div className="flex justify-between items-start mb-1">
-                                    <span className="text-xs font-mono text-slate-500 font-medium">{complaint.id}</span>
-                                    <span className={`text-xs font-semibold px-2 py-0.5 rounded ${complaint.status === 'Resolved' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
-                                        }`}>
-                                        {complaint.status}
-                                    </span>
+                    <div className="bg-white border border-[#9CA3AF] overflow-hidden flex flex-col h-full">
+                        <div className="p-3 border-b border-slate-200 flex justify-between items-center">
+                            <h3 className="text-lg font-bold text-[#1e40af]">Recent Dockets</h3>
+                            <button className="text-xs font-semibold text-[#1e40af] hover:underline">View All &gt;</button>
+                        </div>
+                        <div className="overflow-y-auto flex-1">
+                            {complaints.slice(0, 4).map((complaint) => (
+                                <div key={complaint.id} className="p-4 border-b border-[#9CA3AF] last:border-0 hover:bg-slate-50 transition-none">
+                                    <div className="flex justify-between items-start mb-1">
+                                        <span className="text-xs font-mono text-slate-500 font-medium">{complaint.id}</span>
+                                        <span className={`text-[10px] font-semibold border px-2 py-0.5 uppercase tracking-wider ${complaint.status === 'Resolved' ? 'border-[#2b712b] bg-[#e2f0d9] text-[#2b712b]' : 'border-[#d69900] bg-[#fff2cc] text-[#d69900]'
+                                            }`}>
+                                            {complaint.status}
+                                        </span>
+                                    </div>
+                                    <p className="font-semibold text-[#1e40af] text-sm mb-1">{complaint.aiAnalysis.subCategory}</p>
+                                    <p className="text-xs text-slate-600 truncate flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1 text-slate-400"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                        {complaint.location.address}
+                                    </p>
                                 </div>
-                                <p className="font-medium text-[#0B3D91] text-sm mb-1">{complaint.aiAnalysis.subCategory}</p>
-                                <p className="text-xs text-slate-600 truncate">{complaint.location.address}</p>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
-                    <button className="w-full py-2 text-sm font-semibold text-[#0B3D91] bg-slate-50 border border-slate-200 rounded-md hover:bg-slate-100 transition-colors">
-                        View All Grievances
-                    </button>
                 </div>
             </div>
         </div>

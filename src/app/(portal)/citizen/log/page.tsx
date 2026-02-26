@@ -105,7 +105,7 @@ export default function LogComplaint() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Input Section */}
                     <div className="space-y-6">
-                        <div className="bg-white p-6 border border-slate-200 shadow-sm rounded-lg space-y-4 relative overflow-hidden">
+                        <div className="bg-white p-4 border border-[#9CA3AF] space-y-4 relative overflow-hidden">
                             {isProcessing && (
                                 <div className="absolute inset-0 bg-white/80 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center">
                                     <BrainCircuit className="w-10 h-10 text-[#0B3D91] animate-pulse mb-3" />
@@ -121,12 +121,12 @@ export default function LogComplaint() {
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
                                     placeholder="E.g., There is a large pothole on Main Street causing massive traffic blocks and accidents..."
-                                    className="w-full h-40 bg-white border border-slate-300 rounded-md p-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0B3D91] transition-all placeholder:text-slate-400 resize-none"
+                                    className="w-full h-32 bg-white border border-[#9CA3AF] p-3 text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#0B3D91] transition-none placeholder:text-slate-400 resize-none"
                                 />
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="relative border border-dashed border-slate-300 rounded-md p-4 text-center hover:bg-slate-50 transition-colors cursor-pointer group overflow-hidden">
+                                <div className="relative border border-dashed border-[#9CA3AF] p-3 text-center hover:bg-slate-50 transition-none cursor-pointer group overflow-hidden bg-slate-50">
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -137,19 +137,19 @@ export default function LogComplaint() {
                                         <div className="absolute inset-0 w-full h-full">
                                             {/* eslint-disable-next-line @next/next/no-img-element */}
                                             <img src={photoDataUrl} alt="Preview" className="w-full h-full object-cover" />
-                                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-none">
                                                 <span className="text-white text-xs font-bold">Change Photo</span>
                                             </div>
                                         </div>
                                     ) : (
                                         <>
-                                            <Upload className="w-6 h-6 text-slate-400 mx-auto mb-2 group-hover:text-[#0B3D91] transition-colors" />
+                                            <Upload className="w-5 h-5 text-slate-400 mx-auto mb-1 group-hover:text-[#0B3D91] transition-none" />
                                             <span className="text-xs font-medium text-slate-600">Upload Photo (Proof)</span>
                                         </>
                                     )}
                                 </div>
-                                <div className="border border-slate-300 rounded-md p-4 text-center hover:bg-slate-50 transition-colors cursor-pointer group bg-slate-50">
-                                    <MapPin className="w-6 h-6 text-[#0B3D91] mx-auto mb-2" />
+                                <div className="border border-[#9CA3AF] p-3 text-center hover:bg-slate-50 transition-none cursor-pointer group bg-slate-50">
+                                    <MapPin className="w-5 h-5 text-[#0B3D91] mx-auto mb-1" />
                                     <span className="text-xs font-semibold text-[#0B3D91]">Location Detected</span>
                                     <span className="block text-[10px] text-slate-500 mt-1">Sector 4, Central District</span>
                                 </div>
@@ -169,8 +169,8 @@ export default function LogComplaint() {
                     {/* AI Output Section */}
                     <div className="space-y-6">
                         {analysis ? (
-                            <div className="bg-white p-6 border border-slate-200 shadow-sm rounded-lg animate-in slide-in-from-right duration-500">
-                                <div className="flex items-center mb-6 pb-4 border-b border-slate-100 relative">
+                            <div className="bg-white p-5 border border-[#9CA3AF]">
+                                <div className="flex items-center mb-5 pb-3 border-b border-slate-200 relative">
                                     <div className="absolute right-0 top-0">
                                         <Badge variant={
                                             analysis.riskLevel === "Critical" ? "critical" :
@@ -233,10 +233,10 @@ export default function LogComplaint() {
                                 </div>
                             </div>
                         ) : (
-                            <div className="bg-white border border-slate-200 shadow-sm rounded-lg p-12 text-center flex flex-col items-center justify-center h-full border-dashed">
-                                <BrainCircuit className="w-12 h-12 text-slate-300 mb-4" />
+                            <div className="bg-white border border-[#9CA3AF] p-10 text-center flex flex-col items-center justify-center h-full border-dashed">
+                                <BrainCircuit className="w-10 h-10 text-slate-300 mb-3" />
                                 <h3 className="text-lg font-semibold text-slate-700">Awaiting Input</h3>
-                                <p className="text-sm text-slate-500 max-w-xs mt-2">Enter your grievance details and click analyze to see how the system processes your request.</p>
+                                <p className="text-sm text-slate-500 max-w-xs mt-1">Enter your grievance details and click analyze to see how the system processes your request.</p>
                             </div>
                         )}
                     </div>

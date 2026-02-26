@@ -53,11 +53,19 @@ export default function DepartmentDashboard() {
             </div>
 
             {criticalAlerts > 0 && (
-                <div className="bg-red-50 border-l-4 border-red-600 p-4 rounded shadow-sm mb-6 flex items-start">
-                    <AlertOctagon className="w-6 h-6 text-red-600 mr-3 mt-0.5" />
-                    <div>
-                        <h4 className="text-red-800 font-bold">Action Required: {criticalAlerts} Critical SLA Breach Warnings</h4>
-                        <p className="text-red-700 text-sm mt-1">Emergency dispatch teams must be allocated to High-Risk issues immediately to avoid penalty points.</p>
+                <div className="border border-red-200 shadow-sm rounded-md overflow-hidden mb-6">
+                    <div className="bg-[#cc0000] px-4 py-2 flex justify-between items-center text-white">
+                        <div className="flex items-center space-x-1.5">
+                            <AlertOctagon className="w-4 h-4" />
+                            <span className="text-sm font-semibold tracking-wide">Critical Alert</span>
+                        </div>
+                        <span className="text-xs font-medium bg-black/20 px-2 py-0.5 rounded-sm">Action Required</span>
+                    </div>
+                    <div className="bg-[#fff1f0] p-4 flex items-start">
+                        <div>
+                            <h4 className="text-red-950 font-bold mb-1">{criticalAlerts} SLA Breach Warnings</h4>
+                            <p className="text-red-800 text-sm">Emergency dispatch teams must be allocated to High-Risk issues immediately to avoid penalty points.</p>
+                        </div>
                     </div>
                 </div>
             )}
@@ -95,9 +103,11 @@ export default function DepartmentDashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
 
                 {/* Resolution vs Incoming Chart */}
-                <div className="bg-white p-6 border border-slate-200 shadow-sm rounded-lg">
-                    <h3 className="text-lg font-bold text-[#0B3D91] mb-6">Case Velocity (7 Days)</h3>
-                    <div className="h-[300px]">
+                <div className="bg-white border border-slate-200 shadow-sm rounded-md overflow-hidden">
+                    <div className="p-4 border-b border-slate-100 flex justify-between items-center">
+                        <h3 className="text-lg font-bold text-[#1e40af]">Case Velocity (7 Days)</h3>
+                    </div>
+                    <div className="p-4 h-[300px]">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={resolutionData}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" vertical={false} />
@@ -107,25 +117,27 @@ export default function DepartmentDashboard() {
                                     contentStyle={{ backgroundColor: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "8px", color: "#111827" }}
                                     itemStyle={{ color: "#111827" }}
                                 />
-                                <Bar dataKey="incoming" name="Reported" fill="#0B3D91" radius={[4, 4, 0, 0]} />
-                                <Bar dataKey="resolved" name="Resolved" fill="#138808" radius={[4, 4, 0, 0]} />
+                                <Bar dataKey="incoming" name="Reported" fill="#1e40af" radius={[4, 4, 0, 0]} />
+                                <Bar dataKey="resolved" name="Resolved" fill="#16a34a" radius={[4, 4, 0, 0]} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
                 </div>
 
                 {/* Category Distribution Chart */}
-                <div className="bg-white p-6 border border-slate-200 shadow-sm rounded-lg">
-                    <h3 className="text-lg font-bold text-[#0B3D91] mb-6">Issue Distrubution Analytics</h3>
-                    <div className="h-[300px] flex items-center justify-center">
+                <div className="bg-white border border-slate-200 shadow-sm rounded-md overflow-hidden">
+                    <div className="p-4 border-b border-slate-100 flex justify-between items-center">
+                        <h3 className="text-lg font-bold text-[#1e40af]">Issue Distribution Analytics</h3>
+                    </div>
+                    <div className="p-4 h-[300px] flex items-center justify-center">
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
                                 <Pie
                                     data={categoryDistribution}
                                     cx="50%"
                                     cy="50%"
-                                    innerRadius={80}
-                                    outerRadius={110}
+                                    innerRadius={70}
+                                    outerRadius={100}
                                     paddingAngle={2}
                                     dataKey="value"
                                     stroke="none"
