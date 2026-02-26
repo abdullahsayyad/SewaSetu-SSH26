@@ -3,11 +3,11 @@ version: '3.8'
 services:
   db:
     image: postgres:15-alpine
-    container_name: civicai_postgres
+    container_name: sewasetu_postgres
     environment:
-      POSTGRES_USER: civicai_user
+      POSTGRES_USER: sewasetu_user
       POSTGRES_PASSWORD: secure_password_123
-      POSTGRES_DB: civicai_db
+      POSTGRES_DB: sewasetu_db
     ports:
       - "5433:5432"
     volumes:
