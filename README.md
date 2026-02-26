@@ -1,8 +1,8 @@
-# 🏛️ CivicAI: Grievance Intelligence System
+# 🏛️ SewaSetu: Grievance Intelligence System
 
-![CivicAI Banner](./public/banner.png)
+![SewaSetu Banner](./public/banner.png)
 
-CivicAI is a modern, AI-powered public grievance management portal designed for smart cities and forward-thinking governments. It provides dual-sided platforms for **Citizens** to intuitively report civic issues and **Government Departments** to intelligently route, triage, and resolve those issues at scale.
+SewaSetu is a modern, AI-powered public grievance management portal designed for smart cities and forward-thinking governments. It provides dual-sided platforms for **Citizens** to intuitively report civic issues and **Government Departments** to intelligently route, triage, and resolve those issues at scale.
 
 ## ✨ Key Features
 
@@ -28,7 +28,7 @@ CivicAI is a modern, AI-powered public grievance management portal designed for 
 
 ## 🚀 Getting Started
 
-To run the CivicAI portal locally, follow these steps:
+To run the SewaSetu portal locally, follow these steps:
 
 ### Prerequisites
 *   Node.js 18+
@@ -37,8 +37,8 @@ To run the CivicAI portal locally, follow these steps:
 ### Installation
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/civicai.git
-    cd civicai
+    git clone https://github.com/your-username/sewasetu.git
+    cd sewasetu
     ```
 
 2.  **Install dependencies:**

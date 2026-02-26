@@ -1,4 +1,4 @@
--- seed.sql: Comprehensive structured mock data for CivicAI Indore Demonstration
+-- seed.sql: Comprehensive structured mock data for SewaSetu Indore Demonstration
 
 -- 1. Departments Setup
 INSERT INTO departments (id, name, description, sla_hours) VALUES
@@ -11,10 +11,10 @@ ON CONFLICT DO NOTHING;
 -- 2. Users (1 Citizen, 4 Officers)
 INSERT INTO users (id, full_name, email, password_hash, role, department_id, phone) VALUES
 ('22222222-0000-0000-0000-000000000001', 'Aarav Sharma', 'aarav@example.com', 'hashed_pwd_example', 'citizen', NULL, '9876543210'),
-('22222222-0000-0000-0000-000000000003', 'Ramesh (Roads)', 'ramesh.roads@civicai.gov.in', 'hashed_pwd_example', 'officer', '11111111-0000-0000-0000-000000000001', '9876543212'),
-('22222222-0000-0000-0000-000000000004', 'Sunita (Power)', 'sunita.power@civicai.gov.in', 'hashed_pwd_example', 'officer', '11111111-0000-0000-0000-000000000002', '9876543213'),
-('22222222-0000-0000-0000-000000000005', 'Vikram (Waste)', 'vikram.waste@civicai.gov.in', 'hashed_pwd_example', 'officer', '11111111-0000-0000-0000-000000000003', '9876543214'),
-('22222222-0000-0000-0000-000000000006', 'Aditi (Water)', 'aditi.water@civicai.gov.in', 'hashed_pwd_example', 'officer', '11111111-0000-0000-0000-000000000004', '9876543215')
+('22222222-0000-0000-0000-000000000003', 'Ramesh (Roads)', 'ramesh.roads@sewasetu.gov.in', 'hashed_pwd_example', 'officer', '11111111-0000-0000-0000-000000000001', '9876543212'),
+('22222222-0000-0000-0000-000000000004', 'Sunita (Power)', 'sunita.power@sewasetu.gov.in', 'hashed_pwd_example', 'officer', '11111111-0000-0000-0000-000000000002', '9876543213'),
+('22222222-0000-0000-0000-000000000005', 'Vikram (Waste)', 'vikram.waste@sewasetu.gov.in', 'hashed_pwd_example', 'officer', '11111111-0000-0000-0000-000000000003', '9876543214'),
+('22222222-0000-0000-0000-000000000006', 'Aditi (Water)', 'aditi.water@sewasetu.gov.in', 'hashed_pwd_example', 'officer', '11111111-0000-0000-0000-000000000004', '9876543215')
 ON CONFLICT (email) DO NOTHING;
 
 -- 3 & 4. Complaints & AI Analysis

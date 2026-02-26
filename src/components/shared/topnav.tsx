@@ -52,7 +52,7 @@ export function TopNav({ userName, userRole }: { userName: string; userRole: str
                             <Landmark className="w-8 h-8 text-[#0A3251] mr-3 hidden sm:block" />
                             <div>
                                 <h1 className="text-xl md:text-2xl font-black text-[#0A3251] tracking-tight uppercase">
-                                    Civic Grievance Intelligence System
+                                    SewaSetu
                                 </h1>
                                 <h2 className="text-xs md:text-sm font-bold text-slate-500 uppercase tracking-widest mt-0.5">
                                     भारत सरकार / Government of India

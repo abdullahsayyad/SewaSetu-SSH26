@@ -1,4 +1,4 @@
--- CivicAI Production-Grade PostgreSQL Schema
+-- SewaSetu Production-Grade PostgreSQL Schema
 
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";

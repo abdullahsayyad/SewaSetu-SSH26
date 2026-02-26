@@ -8,7 +8,7 @@ export function Footer() {
                     <div className="md:col-span-2">
                         <h3 className="text-white font-bold text-lg mb-4 flex items-center">
                             <Globe className="w-5 h-5 mr-2" />
-                            Civic Grievance Intelligence System
+                            SewaSetu
                         </h3>
                         <p className="text-sm leading-relaxed max-w-md">
                             A national AI-driven initiative for transparent, escalated, and resolved civic infrastructure faults under standard operating procedures defined by the Ministry of Electronics & IT.
