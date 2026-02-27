@@ -11,6 +11,35 @@ const statusMapping: Record<string, ComplaintStatus> = {
     'resolved': 'Resolved'
 }
 
+// Maps AI category names → database department names
+// The backend AI classifier uses broader categories (e.g. "Infrastructure")
+// but the DB departments have specific names (e.g. "Roads")
+const categoryToDepartment: Record<string, string> = {
+    // Direct matches (AI category = DB department name)
+    'Electricity': 'Electricity',
+    'Sanitation': 'Sanitation',
+
+    // AI categories that map to "Roads"
+    'Infrastructure': 'Roads',
+    'Roads': 'Roads',
+    'Transport': 'Roads',
+
+    // AI categories that map to "Water"
+    'Water & Drainage': 'Water',
+    'Water': 'Water',
+
+    // AI categories that map to "Sanitation"
+    'Environment': 'Sanitation',
+    'Public Health': 'Sanitation',
+
+    // Fallback-ish
+    'Law & Order': 'Roads',
+}
+
+function mapCategoryToDepartment(category: string): string {
+    return categoryToDepartment[category] || category
+}
+
 export async function getComplaints(citizenId?: string): Promise<Complaint[]> {
     try {
         const complaints = await db.complaints.findMany({
@@ -26,7 +55,9 @@ export async function getComplaints(citizenId?: string): Promise<Complaint[]> {
         return complaints.map((c: any) => {
             const ai = c.complaint_ai_analysis[0]
             const photoUrl = c.attachments?.[0]?.file_url || null
+            const aiCategory = ai?.category || c.departments?.name || "Unknown"
 
+            // Constructing the complex nested object from flat-ish DB fields
             return {
                 id: c.id.slice(-8).toUpperCase(), // Short visual ID for UI
                 citizenId: c.citizen_id,
@@ -39,22 +70,49 @@ export async function getComplaints(citizenId?: string): Promise<Complaint[]> {
                 photoUrl,
                 createdAt: c.created_at?.toISOString() || new Date().toISOString(),
                 status: statusMapping[c.status] || 'Open',
+                departmentName: mapCategoryToDepartment(aiCategory),
                 aiAnalysis: ai ? {
-                    category: ai.category,
-                    subCategory: ai.sub_category || "",
-                    riskLevel: ai.risk_score > 80 ? "Critical" : ai.risk_score > 50 ? "High" : "Low",
-                    escalationScore: ai.escalation_score,
-                    sentimentScore: Number(ai.sentiment_score),
-                    keywords: ai.extracted_keywords as string[] | undefined,
+                    language_detection: { detected_language: "en", confidence: 0.99 },
+                    translation: { was_translated: false, original_text: "", translated_text: "", translation_confidence: 0 },
+                    category_analysis: {
+                        category: ai.category,
+                        subcategory: ai.sub_category || "",
+                        category_confidence: 0.9
+                    },
+                    sentiment_analysis: {
+                        sentiment_score: Number(ai.sentiment_score),
+                        sentiment_label: Number(ai.sentiment_score) < 0 ? "Negative" : "Neutral"
+                    },
+                    severity_analysis: {
+                        severity_score: ai.risk_score,
+                        severity_level: ai.risk_score > 80 ? "Critical" : ai.risk_score > 50 ? "High" : "Low",
+                        risk_type: "Platform Migrated",
+                        matched_keywords: []
+                    },
+                    extracted_keywords: ai.extracted_keywords as string[] || [],
+                    entities: { location: "Mapped Location", landmark: "" },
+                    department_probabilities: [{ department: ai.category, probability: 0.9 }],
+                    priority_scoring: {
+                        priority_score: ai.escalation_score,
+                        risk_tier: ai.risk_score > 80 ? "Critical" : ai.risk_score > 50 ? "High" : "Low",
+                        explainability: { components: [], total_before_clamp: ai.escalation_score }
+                    },
+                    processing_time_ms: 100, // mock fallback
+                    // Keep these specific properties on the root object temporarily for backward compatibility in components
                     summary: ai.ai_summary,
                     suggestedAction: ai.suggested_action || undefined,
                     estimatedResolutionHours: c.departments?.sla_hours || 48
                 } : {
-                    category: "Unknown",
-                    subCategory: "Unknown",
-                    riskLevel: "Low",
-                    escalationScore: 0,
-                    sentimentScore: 0,
+                    language_detection: { detected_language: "en", confidence: 1 },
+                    translation: { was_translated: false, original_text: "", translated_text: "", translation_confidence: 0 },
+                    category_analysis: { category: "Unknown", subcategory: "Unknown", category_confidence: 0 },
+                    sentiment_analysis: { sentiment_score: 0, sentiment_label: "Unknown" },
+                    severity_analysis: { severity_score: 0, severity_level: "Low", risk_type: "Unknown", matched_keywords: [] },
+                    extracted_keywords: [],
+                    entities: { location: "Unknown", landmark: "" },
+                    department_probabilities: [],
+                    priority_scoring: { priority_score: 0, risk_tier: "Low", explainability: { components: [], total_before_clamp: 0 } },
+                    processing_time_ms: 0,
                     summary: "No AI data",
                     estimatedResolutionHours: 48
                 }
@@ -81,7 +139,7 @@ export async function logComplaint(data: any, citizenId?: string) {
         }
 
         let department = await db.departments.findFirst({
-            where: { name: { contains: data.aiAnalysis.category, mode: 'insensitive' } }
+            where: { name: { contains: data.aiAnalysis.category_analysis.category, mode: 'insensitive' } }
         })
 
         if (!department) {
@@ -96,22 +154,22 @@ export async function logComplaint(data: any, citizenId?: string) {
             data: {
                 citizen_id: citizen.id,
                 department_id: department.id,
-                title: data.aiAnalysis.summary.substring(0, 50),
+                title: data.description.substring(0, 50),
                 description: data.description,
                 latitude: data.location.lat,
                 longitude: data.location.lng,
-                priority_level: data.aiAnalysis.riskLevel === 'Critical' ? 'critical' : data.aiAnalysis.riskLevel === 'High' ? 'high' : 'medium',
+                priority_level: data.aiAnalysis.priority_scoring.risk_tier === 'Critical' ? 'critical' : data.aiAnalysis.priority_scoring.risk_tier === 'High' ? 'high' : 'medium',
                 status: 'pending',
                 complaint_ai_analysis: {
                     create: {
-                        category: data.aiAnalysis.category,
-                        sub_category: data.aiAnalysis.subCategory,
-                        sentiment_score: data.aiAnalysis.sentimentScore,
-                        risk_score: data.aiAnalysis.riskLevel === 'Critical' ? 95 : 50,
-                        escalation_score: data.aiAnalysis.escalationScore,
-                        extracted_keywords: data.aiAnalysis.keywords,
-                        ai_summary: data.aiAnalysis.summary,
-                        suggested_action: data.aiAnalysis.suggestedAction
+                        category: data.aiAnalysis.category_analysis.category,
+                        sub_category: data.aiAnalysis.category_analysis.subcategory,
+                        sentiment_score: data.aiAnalysis.sentiment_analysis.sentiment_score,
+                        risk_score: data.aiAnalysis.priority_scoring.risk_tier === 'Critical' ? 95 : 50,
+                        escalation_score: data.aiAnalysis.priority_scoring.priority_score,
+                        extracted_keywords: data.aiAnalysis.extracted_keywords,
+                        ai_summary: data.aiAnalysis.summary || "Summary generation offloaded to backend structure.",
+                        suggested_action: data.aiAnalysis.suggestedAction || "Action generation offloaded to backend structure."
                     }
                 },
                 ...(data.photoDataUrl && {

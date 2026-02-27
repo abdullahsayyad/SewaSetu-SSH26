@@ -27,7 +27,7 @@ export default function DepartmentMap() {
     }, [])
 
     // Filter complaints specifically for the logged in department
-    const complaints = allComplaints.filter(c => c.aiAnalysis.category === department && c.status !== "Resolved")
+    const complaints = allComplaints.filter(c => c.departmentName === department && c.status !== "Resolved")
 
     return (
         <div className="space-y-6 max-w-7xl mx-auto flex flex-col h-[calc(100vh-8rem)]">

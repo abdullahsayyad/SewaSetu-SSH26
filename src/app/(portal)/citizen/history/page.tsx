@@ -53,8 +53,8 @@ export default function ComplaintHistory() {
                                         {new Date(complaint.createdAt).toLocaleDateString()}
                                     </span>
                                 </div>
-                                <h3 className="text-lg font-bold text-[#1e40af] mt-1">{complaint.aiAnalysis.category}</h3>
-                                <p className="text-slate-600 font-medium text-sm mt-1">{complaint.aiAnalysis.subCategory}</p>
+                                <h3 className="text-lg font-bold text-[#1e40af] mt-1">{complaint.aiAnalysis.category_analysis.category}</h3>
+                                <p className="text-slate-600 font-medium text-sm mt-1">{complaint.aiAnalysis.category_analysis.subcategory}</p>
                             </div>
 
                             <div className="flex flex-col items-end space-y-2">
@@ -66,10 +66,13 @@ export default function ComplaintHistory() {
                                 </Badge>
 
                                 <div className="text-xs text-slate-500 font-medium">
-                                    Risk Assessed: <span className={`font-bold ${complaint.aiAnalysis.riskLevel === 'Critical' ? 'text-red-600' :
-                                        complaint.aiAnalysis.riskLevel === 'High' ? 'text-orange-600' :
-                                            complaint.aiAnalysis.riskLevel === 'Moderate' ? 'text-yellow-600' : 'text-green-600'
-                                        }`}>{complaint.aiAnalysis.riskLevel}</span>
+                                    <Badge variant={
+                                        complaint.aiAnalysis.severity_analysis.severity_level === "Critical" ? "critical" :
+                                            complaint.aiAnalysis.severity_analysis.severity_level === "High" ? "high" :
+                                                complaint.aiAnalysis.severity_analysis.severity_level === "Moderate" ? "moderate" : "low"
+                                    }>
+                                        {complaint.aiAnalysis.severity_analysis.severity_level}
+                                    </Badge>
                                 </div>
                             </div>
                         </div>

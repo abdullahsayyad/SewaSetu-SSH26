@@ -91,7 +91,7 @@ export function TrackingDialog({ complaint, onClose }: TrackingDialogProps) {
                         </div>
                         <div className="flex items-center text-sm text-slate-600 bg-slate-50 px-3 py-2 rounded border border-slate-200">
                             <FileText className="w-4 h-4 mr-2 text-[#0B3D91]" />
-                            <span>Dept: <strong className="text-slate-900">{complaint.aiAnalysis.category}</strong></span>
+                            <span>Dept: <strong className="text-slate-900">{complaint.aiAnalysis.category_analysis.category}</strong></span>
                         </div>
                     </div>
                 </div>

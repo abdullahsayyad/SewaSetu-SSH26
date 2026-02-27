@@ -87,22 +87,22 @@ export default function CivicMap({ complaints, zoom = 13, height = "500px" }: Ci
                     <Marker
                         key={c.id}
                         position={[c.location.lat, c.location.lng]}
-                        icon={icons[c.aiAnalysis.riskLevel]}
+                        icon={icons[c.aiAnalysis.severity_analysis.severity_level as keyof typeof icons]}
                     >
                         <Popup>
                             <div className="p-0 min-w-[220px]">
                                 <div className="flex justify-between items-start mb-2 border-b border-slate-100 pb-2">
                                     <span className="text-xs font-mono text-slate-500 font-medium">ID: {c.id}</span>
                                     <Badge variant={
-                                        c.aiAnalysis.riskLevel === "Critical" ? "critical" :
-                                            c.aiAnalysis.riskLevel === "High" ? "high" :
-                                                c.aiAnalysis.riskLevel === "Moderate" ? "moderate" : "low"
+                                        c.aiAnalysis.severity_analysis.severity_level === "Critical" ? "critical" :
+                                            c.aiAnalysis.severity_analysis.severity_level === "High" ? "high" :
+                                                c.aiAnalysis.severity_analysis.severity_level === "Moderate" ? "moderate" : "low"
                                     }>
-                                        {c.aiAnalysis.riskLevel}
+                                        {c.aiAnalysis.severity_analysis.severity_level}
                                     </Badge>
                                 </div>
-                                <h4 className="font-semibold text-[#0B3D91] mb-1 leading-tight">{c.aiAnalysis.category}</h4>
-                                <p className="text-sm text-slate-600 mb-3 whitespace-normal break-words">{c.aiAnalysis.subCategory}</p>
+                                <h4 className="font-semibold text-[#0B3D91] mb-1 leading-tight">{c.aiAnalysis.category_analysis.category}</h4>
+                                <p className="text-sm text-slate-600 mb-3 whitespace-normal break-words">{c.aiAnalysis.category_analysis.subcategory}</p>
 
                                 <div className="text-xs text-slate-500 flex justify-between bg-slate-50 p-2 rounded border border-slate-100 mt-2">
                                     <span>{new Date(c.createdAt).toLocaleDateString()}</span>

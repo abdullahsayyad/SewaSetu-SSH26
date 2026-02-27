@@ -58,7 +58,7 @@ export function FullReportDialog({ complaint, onClose }: FullReportDialogProps) 
                         </div>
                         <div className="border-r border-slate-100 pr-4">
                             <span className="text-[10px] sm:text-xs uppercase font-bold text-slate-500 tracking-wider block mb-1">Department</span>
-                            <span className="text-slate-900 font-medium text-sm sm:text-base">{complaint.aiAnalysis.category}</span>
+                            <span className="text-slate-900 font-medium text-sm sm:text-base">{complaint.aiAnalysis.category_analysis.category}</span>
                         </div>
                         <div>
                             <span className="text-[10px] sm:text-xs uppercase font-bold text-slate-500 tracking-wider block mb-1">SLA Target</span>
@@ -125,12 +125,12 @@ export function FullReportDialog({ complaint, onClose }: FullReportDialogProps) 
                                     <div>
                                         <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Entity Extraction (Keywords)</h4>
                                         <div className="flex flex-wrap gap-2">
-                                            {complaint.aiAnalysis.keywords && complaint.aiAnalysis.keywords.map((kw, i) => (
+                                            {complaint.aiAnalysis.extracted_keywords && complaint.aiAnalysis.extracted_keywords.map((kw, i) => (
                                                 <span key={i} className="px-2.5 py-1 bg-slate-100 text-slate-600 border border-slate-200 rounded text-sm font-medium">
                                                     {kw}
                                                 </span>
                                             ))}
-                                            {!complaint.aiAnalysis.keywords?.length && <span className="text-sm text-slate-500 italic">No entities extracted.</span>}
+                                            {!complaint.aiAnalysis.extracted_keywords?.length && <span className="text-sm text-slate-500 italic">No entities extracted.</span>}
                                         </div>
                                     </div>
                                 </div>
@@ -143,10 +143,10 @@ export function FullReportDialog({ complaint, onClose }: FullReportDialogProps) 
 
                             {/* Threat Matrix */}
                             <div className="bg-white border border-slate-200 rounded-md overflow-hidden shadow-sm">
-                                <div className={`px-4 py-3 flex items-center border-b ${complaint.aiAnalysis.riskLevel === 'Critical' ? 'bg-red-50 border-red-100' : 'bg-slate-100 border-slate-200'
+                                <div className={`px-4 py-3 flex items-center border-b ${complaint.aiAnalysis.severity_analysis.severity_level === 'Critical' ? 'bg-red-50 border-red-100' : 'bg-slate-100 border-slate-200'
                                     }`}>
-                                    <AlertTriangle className={`w-4 h-4 mr-2 ${complaint.aiAnalysis.riskLevel === 'Critical' ? 'text-red-600' : 'text-slate-500'}`} />
-                                    <h3 className={`text-sm font-bold uppercase tracking-wider ${complaint.aiAnalysis.riskLevel === 'Critical' ? 'text-red-700' : 'text-slate-700'
+                                    <AlertTriangle className={`w-4 h-4 mr-2 ${complaint.aiAnalysis.severity_analysis.severity_level === 'Critical' ? 'text-red-600' : 'text-slate-500'}`} />
+                                    <h3 className={`text-sm font-bold uppercase tracking-wider ${complaint.aiAnalysis.severity_analysis.severity_level === 'Critical' ? 'text-red-700' : 'text-slate-700'
                                         }`}>Risk Matrix</h3>
                                 </div>
                                 <div className="p-4 space-y-4">
@@ -154,12 +154,12 @@ export function FullReportDialog({ complaint, onClose }: FullReportDialogProps) 
                                     <div>
                                         <div className="flex justify-between items-end mb-1">
                                             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Escalation Probability</span>
-                                            <span className="text-sm font-bold text-slate-900">{complaint.aiAnalysis.escalationScore}%</span>
+                                            <span className="text-sm font-bold text-slate-900">{complaint.aiAnalysis.priority_scoring.priority_score}%</span>
                                         </div>
                                         <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                                             <div
-                                                className={`h-full ${complaint.aiAnalysis.escalationScore > 75 ? 'bg-red-500' : complaint.aiAnalysis.escalationScore > 40 ? 'bg-amber-500' : 'bg-green-500'}`}
-                                                style={{ width: `${Math.max(0, Math.min(100, complaint.aiAnalysis.escalationScore))}%` }}
+                                                className={`h-full ${complaint.aiAnalysis.priority_scoring.priority_score > 75 ? 'bg-red-500' : complaint.aiAnalysis.priority_scoring.priority_score > 40 ? 'bg-amber-500' : 'bg-green-500'}`}
+                                                style={{ width: `${Math.max(0, Math.min(100, complaint.aiAnalysis.priority_scoring.priority_score))}%` }}
                                             />
                                         </div>
                                     </div>
@@ -167,11 +167,11 @@ export function FullReportDialog({ complaint, onClose }: FullReportDialogProps) 
                                     <div>
                                         <div className="flex justify-between items-end mb-1">
                                             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Severity Classification</span>
-                                            <span className={`text-sm font-bold uppercase ${complaint.aiAnalysis.riskLevel === 'Critical' ? 'text-red-600' :
-                                                complaint.aiAnalysis.riskLevel === 'High' ? 'text-orange-600' :
-                                                    complaint.aiAnalysis.riskLevel === 'Moderate' ? 'text-yellow-600' : 'text-green-600'
+                                            <span className={`text-sm font-bold uppercase ${complaint.aiAnalysis.severity_analysis.severity_level === 'Critical' ? 'text-red-600' :
+                                                complaint.aiAnalysis.severity_analysis.severity_level === 'High' ? 'text-orange-600' :
+                                                    complaint.aiAnalysis.severity_analysis.severity_level === 'Moderate' ? 'text-yellow-600' : 'text-green-600'
                                                 }`}>
-                                                {complaint.aiAnalysis.riskLevel}
+                                                {complaint.aiAnalysis.severity_analysis.severity_level}
                                             </span>
                                         </div>
                                     </div>
@@ -180,9 +180,9 @@ export function FullReportDialog({ complaint, onClose }: FullReportDialogProps) 
                                         <div className="flex justify-between items-end mb-1">
                                             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Tone Sentiment</span>
                                             <span className="text-sm font-bold text-slate-900">
-                                                {complaint.aiAnalysis.sentimentScore < -0.7 ? "Highly Negative" :
-                                                    complaint.aiAnalysis.sentimentScore < -0.3 ? "Negative" : "Neutral/Positive"}
-                                                <span className="text-slate-400 font-mono ml-1">({complaint.aiAnalysis.sentimentScore.toFixed(2)})</span>
+                                                {complaint.aiAnalysis.sentiment_analysis.sentiment_score < -0.7 ? "Highly Negative" :
+                                                    complaint.aiAnalysis.sentiment_analysis.sentiment_score < -0.3 ? "Negative" : "Neutral/Positive"}
+                                                <span className="text-slate-400 font-mono ml-1">({complaint.aiAnalysis.sentiment_analysis.sentiment_score.toFixed(2)})</span>
                                             </span>
                                         </div>
                                     </div>

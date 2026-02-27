@@ -19,7 +19,7 @@ export default function HighRiskAlerts() {
     }, [])
 
     // Show only critically elevated complaints for this dept
-    const complaints = allComplaints.filter(c => c.aiAnalysis.category === department && c.status !== "Resolved" && c.aiAnalysis.riskLevel === "Critical")
+    const complaints = allComplaints.filter(c => c.departmentName === department && c.status !== "Resolved" && c.aiAnalysis.severity_analysis.severity_level === "Critical")
 
     return (
         <div className="max-w-7xl mx-auto space-y-6">
@@ -41,13 +41,13 @@ export default function HighRiskAlerts() {
                         <CardContent className="p-8 pl-10">
                             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 border-b border-red-100 pb-6">
                                 <div>
-                                    <h3 className="text-2xl font-bold text-[#0B3D91] mb-3">{complaint.aiAnalysis.subCategory}</h3>
+                                    <h3 className="text-2xl font-bold text-[#0B3D91] mb-3">{complaint.aiAnalysis.category_analysis.subcategory}</h3>
                                     <div className="flex items-center space-x-3">
                                         <span className="text-sm font-mono font-bold text-slate-700 bg-slate-100 px-3 py-1 rounded border border-slate-200">
                                             ID: {complaint.id}
                                         </span>
                                         <Badge variant="critical">
-                                            Escalation Critical: {complaint.aiAnalysis.escalationScore}/100
+                                            Escalation Critical: {complaint.aiAnalysis.priority_scoring.priority_score}/100
                                         </Badge>
                                     </div>
                                 </div>

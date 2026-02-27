@@ -35,7 +35,7 @@ export default function IncomingComplaints() {
     }
 
     // Show complaints specifically routed to this department
-    const complaints = allComplaints.filter(c => c.aiAnalysis.category === department && c.status !== "Resolved")
+    const complaints = allComplaints.filter(c => c.departmentName === department && c.status !== "Resolved")
 
     return (
         <div className="max-w-7xl mx-auto space-y-6">
@@ -48,7 +48,7 @@ export default function IncomingComplaints() {
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
                 {complaints.map(complaint => {
-                    const level = complaint.aiAnalysis.riskLevel;
+                    const level = complaint.aiAnalysis.severity_analysis.severity_level;
                     const isCritical = level === "Critical";
                     const isHigh = level === "High";
                     const isModerate = level === "Moderate";
@@ -78,12 +78,12 @@ export default function IncomingComplaints() {
                                         </span>
                                     </div>
                                     <span className={`text-xs font-bold ${mutedColor}`}>
-                                        Escalation: {complaint.aiAnalysis.escalationScore}/100
+                                        Escalation: {complaint.aiAnalysis.priority_scoring.priority_score}/100
                                     </span>
                                 </div>
 
                                 <div className="mb-4">
-                                    <h4 className={`text-xl font-bold ${textColor} mb-1.5`}>{complaint.aiAnalysis.subCategory}</h4>
+                                    <h4 className={`text-xl font-bold ${textColor} mb-1.5`}>{complaint.aiAnalysis.category_analysis.subcategory}</h4>
                                     <div className={`flex items-center text-sm font-medium ${mutedColor}`}>
                                         <MapPin className="w-4 h-4 mr-1 opacity-70" />
                                         {complaint.location.address}

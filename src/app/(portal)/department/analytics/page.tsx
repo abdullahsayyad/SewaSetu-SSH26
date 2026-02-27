@@ -20,18 +20,18 @@ export default function AnalyticsDashboard() {
     }, [])
 
     // Analytics Processing
-    const deptComplaints = allComplaints.filter(c => c.aiAnalysis.category === department)
+    const deptComplaints = allComplaints.filter(c => c.departmentName === department)
 
     // 1. Basic Counts
     const totalCount = deptComplaints.length
     const resolvedCount = deptComplaints.filter(c => c.status === "Resolved").length
-    const criticalCount = deptComplaints.filter(c => c.aiAnalysis.riskLevel === "Critical").length
+    const criticalCount = deptComplaints.filter(c => c.aiAnalysis.severity_analysis.severity_level === "Critical").length
 
     const resolutionRate = totalCount > 0 ? Math.round((resolvedCount / totalCount) * 100) : 0
 
     // 2. Subcategory Distribution for Pie Chart
     const subcats = deptComplaints.reduce((acc, c) => {
-        const cat = c.aiAnalysis.subCategory || "Other"
+        const cat = c.aiAnalysis.category_analysis.subcategory || "Other"
         acc[cat] = (acc[cat] || 0) + 1
         return acc
     }, {} as Record<string, number>)
@@ -43,23 +43,39 @@ export default function AnalyticsDashboard() {
 
     // 3. Risk Level Distribution
     const riskLevels = deptComplaints.reduce((acc, c) => {
-        const risk = c.aiAnalysis.riskLevel || "Low"
+        const risk = c.aiAnalysis.severity_analysis.severity_level || "Low"
         acc[risk] = (acc[risk] || 0) + 1
         return acc
     }, {} as Record<string, number>)
 
     const riskData = Object.entries(riskLevels).map(([name, value]) => ({ name, value }))
 
-    // 4. Fake Timeline Data (since db doesn't have deep histories yet, simulating last 7 days)
-    const timelineData = Array.from({ length: 7 }).map((_, i) => {
-        const d = new Date()
-        d.setDate(d.getDate() - (6 - i))
-        return {
-            name: d.toLocaleDateString('en-US', { weekday: 'short' }),
-            incoming: Math.floor(Math.random() * 20) + 5,
-            resolved: Math.floor(Math.random() * 15) + 3
+    // 4. Timeline Data — group actual complaints by day over last 7 days
+    const timelineData = (() => {
+        const result: { name: string; incoming: number; resolved: number }[] = []
+        for (let i = 6; i >= 0; i--) {
+            const d = new Date()
+            d.setDate(d.getDate() - i)
+            const dayStr = d.toLocaleDateString('en-US', { weekday: 'short' })
+            const dayStart = new Date(d.getFullYear(), d.getMonth(), d.getDate())
+            const dayEnd = new Date(dayStart.getTime() + 86400000)
+
+            const incoming = deptComplaints.filter(c => {
+                const t = new Date(c.createdAt)
+                return t >= dayStart && t < dayEnd
+            }).length
+
+            const resolved = deptComplaints.filter(c => {
+                if (c.status !== "Resolved") return false
+                const t = new Date(c.createdAt)
+                return t >= dayStart && t < dayEnd
+            }).length
+
+            result.push({ name: dayStr, incoming, resolved })
         }
-    })
+        return result
+    })()
+
 
     return (
         <div className="space-y-6 max-w-7xl mx-auto">

@@ -30,7 +30,7 @@ export default function CitizenDashboard() {
     }, [])
 
     const activeIssues = complaints.filter(c => c.status !== "Resolved").length
-    const criticalIssues = complaints.filter(c => c.aiAnalysis.riskLevel === "Critical" && c.status !== "Resolved").length
+    const criticalIssues = complaints.filter(c => c.aiAnalysis.severity_analysis.severity_level === "Critical" && c.status !== "Resolved").length
     const resolvedIssues = complaints.filter(c => c.status === "Resolved").length
 
     return (
@@ -110,7 +110,7 @@ export default function CitizenDashboard() {
                                             {complaint.status}
                                         </span>
                                     </div>
-                                    <p className="font-semibold text-[#1e40af] text-sm mb-1">{complaint.aiAnalysis.subCategory}</p>
+                                    <p className="font-semibold text-[#1e40af] text-sm mb-1">{complaint.aiAnalysis.category_analysis.subcategory}</p>
                                     <p className="text-xs text-slate-600 truncate flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1 text-slate-400"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                                         {complaint.location.address}

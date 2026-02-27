@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { BrainCircuit, Upload, MapPin, CheckCircle2, ChevronRight, FileText } from "lucide-react"
-import { simulateAIAnalysis, type AIAnalysisResult } from "@/lib/data/ai-engine"
+import { analyzeGrievance, type AIAnalysisResult } from "@/lib/data/ai-engine"
 import { useRouter } from "next/navigation"
 import { logComplaint } from "@/app/actions/complaints"
 
@@ -33,12 +33,15 @@ export default function LogComplaint() {
 
         setIsProcessing(true)
 
-        // Simulate API delay for AI engine
-        setTimeout(() => {
-            const result = simulateAIAnalysis(description)
+        // Call real API
+        try {
+            const result = await analyzeGrievance(description)
             setAnalysis(result)
+        } catch (e) {
+            console.error("Failed to analyze grievance", e)
+        } finally {
             setIsProcessing(false)
-        }, 1500)
+        }
     }
 
     const [generatedId, setGeneratedId] = useState<string | null>(null)
@@ -94,7 +97,7 @@ export default function LogComplaint() {
                         <CheckCircle2 className="w-10 h-10 text-green-600" />
                     </div>
                     <h3 className="text-2xl font-bold text-[#0B3D91]">Grievance Logged Successfully</h3>
-                    <p className="text-slate-600 text-center max-w-md">Your complaint has been processed and routed to the {analysis?.category} department. You will receive SMS updates.</p>
+                    <p className="text-slate-600 text-center max-w-md">Your complaint has been processed and routed to the {analysis?.category_analysis.category} department. You will receive SMS updates.</p>
                     <div className="mt-4 p-3 bg-slate-50 border border-slate-200 rounded text-center">
                         <span className="text-xs text-slate-500 uppercase tracking-wider block mb-1">Docket Number</span>
                         <span className="font-mono font-bold text-lg text-[#0B3D91]">{generatedId}</span>
@@ -173,11 +176,11 @@ export default function LogComplaint() {
                                 <div className="flex items-center mb-5 pb-3 border-b border-slate-200 relative">
                                     <div className="absolute right-0 top-0">
                                         <Badge variant={
-                                            analysis.riskLevel === "Critical" ? "critical" :
-                                                analysis.riskLevel === "High" ? "high" :
-                                                    analysis.riskLevel === "Moderate" ? "moderate" : "low"
+                                            analysis.severity_analysis.severity_level === "Critical" ? "critical" :
+                                                analysis.severity_analysis.severity_level === "High" ? "high" :
+                                                    analysis.severity_analysis.severity_level === "Moderate" ? "moderate" : "low"
                                         }>
-                                            {analysis.riskLevel} Priority
+                                            {analysis.severity_analysis.severity_level} Priority
                                         </Badge>
                                     </div>
                                     <BrainCircuit className="w-6 h-6 text-[#0B3D91] mr-3" />
@@ -190,13 +193,13 @@ export default function LogComplaint() {
                                 <div className="space-y-5">
                                     <div>
                                         <span className="text-xs uppercase font-bold text-slate-400 tracking-wider">Routed Department</span>
-                                        <p className="text-lg font-semibold text-slate-900">{analysis.category}</p>
+                                        <p className="text-lg font-semibold text-slate-900">{analysis.category_analysis.category}</p>
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="bg-slate-50 p-3 rounded border border-slate-100">
                                             <span className="text-xs uppercase font-bold text-slate-400 tracking-wider">Sub-Category</span>
-                                            <p className="font-medium text-slate-800">{analysis.subCategory}</p>
+                                            <p className="font-medium text-slate-800">{analysis.category_analysis.subcategory}</p>
                                         </div>
                                         <div className="bg-slate-50 p-3 rounded border border-slate-100">
                                             <span className="text-xs uppercase font-bold text-slate-400 tracking-wider">Target SLA</span>
@@ -207,14 +210,14 @@ export default function LogComplaint() {
                                     <div>
                                         <span className="text-xs uppercase font-bold text-slate-400 tracking-wider block mb-2">Escalation Score</span>
                                         <div className="w-full bg-slate-200 rounded-full h-2.5">
-                                            <div className={`h-2.5 rounded-full ${analysis.escalationScore > 75 ? 'bg-red-600' :
-                                                analysis.escalationScore > 50 ? 'bg-orange-500' :
-                                                    analysis.escalationScore > 25 ? 'bg-yellow-500' : 'bg-green-600'
-                                                }`} style={{ width: `${analysis.escalationScore}%` }}></div>
+                                            <div className={`h-2.5 rounded-full ${analysis.priority_scoring.priority_score > 75 ? 'bg-red-600' :
+                                                analysis.priority_scoring.priority_score > 50 ? 'bg-orange-500' :
+                                                    analysis.priority_scoring.priority_score > 25 ? 'bg-yellow-500' : 'bg-green-600'
+                                                }`} style={{ width: `${analysis.priority_scoring.priority_score}%` }}></div>
                                         </div>
                                         <div className="flex justify-between text-xs text-slate-500 mt-1">
                                             <span>0</span>
-                                            <span className="font-bold">{analysis.escalationScore}/100</span>
+                                            <span className="font-bold">{analysis.priority_scoring.priority_score}/100</span>
                                         </div>
                                     </div>
 

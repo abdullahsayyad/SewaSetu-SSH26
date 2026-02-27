@@ -7,25 +7,7 @@ import { Complaint } from "@/lib/data/mock-db"
 import { getComplaints } from "@/app/actions/complaints"
 import { AlertOctagon, CheckSquare, Clock, Users } from "lucide-react"
 
-// Chart data processing - Mocked for the specific department
-const resolutionData = [
-    { name: "Mon", incoming: 45, resolved: 32 },
-    { name: "Tue", incoming: 52, resolved: 48 },
-    { name: "Wed", incoming: 38, resolved: 41 },
-    { name: "Thu", incoming: 65, resolved: 50 },
-    { name: "Fri", incoming: 48, resolved: 55 },
-    { name: "Sat", incoming: 25, resolved: 30 },
-    { name: "Sun", incoming: 20, resolved: 15 },
-]
-
-const categoryDistribution = [
-    { name: "Power Outage", value: 45 },
-    { name: "Streetlights", value: 30 },
-    { name: "Billing Issues", value: 15 },
-    { name: "Fallen Wires", value: 10 },
-]
-
-const COLORS = ["#0B3D91", "#138808", "#FF9933", "#475569"] // Gov of India palette
+const COLORS = ["#0B3D91", "#138808", "#FF9933", "#475569", "#DC2626", "#F59E0B"]
 
 export default function DepartmentDashboard() {
     const [department, setDepartment] = useState("Electricity")
@@ -37,11 +19,42 @@ export default function DepartmentDashboard() {
         getComplaints().then(setAllComplaints)
     }, [])
 
-    // Filter mock DB for this specific department
-    const deptComplaints = allComplaints.filter(c => c.aiAnalysis.category === department)
+    // Filter for this specific department
+    const deptComplaints = allComplaints.filter(c => c.departmentName === department)
 
     const activeCases = deptComplaints.filter(c => c.status !== "Resolved").length
-    const criticalAlerts = deptComplaints.filter(c => c.aiAnalysis.riskLevel === "Critical" && c.status !== "Resolved").length
+    const resolvedCases = deptComplaints.filter(c => c.status === "Resolved").length
+    const criticalAlerts = deptComplaints.filter(c => c.aiAnalysis.severity_analysis.severity_level === "Critical" && c.status !== "Resolved").length
+    const totalCases = deptComplaints.length
+    const resolutionRate = totalCases > 0 ? Math.round((resolvedCases / totalCases) * 100) : 0
+
+    // Derive resolution chart data from actual complaints grouped by day of week
+    const resolutionData = (() => {
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        const counts: Record<string, { incoming: number; resolved: number }> = {}
+        days.forEach(d => counts[d] = { incoming: 0, resolved: 0 })
+
+        deptComplaints.forEach(c => {
+            const day = days[new Date(c.createdAt).getDay()]
+            counts[day].incoming += 1
+            if (c.status === "Resolved") counts[day].resolved += 1
+        })
+
+        return days.map(name => ({ name, incoming: counts[name].incoming, resolved: counts[name].resolved }))
+    })()
+
+    // Derive category distribution from actual subcategories
+    const categoryDistribution = (() => {
+        const subcats: Record<string, number> = {}
+        deptComplaints.forEach(c => {
+            const sub = c.aiAnalysis.category_analysis.subcategory || "Other"
+            subcats[sub] = (subcats[sub] || 0) + 1
+        })
+        return Object.entries(subcats)
+            .map(([name, value]) => ({ name, value }))
+            .sort((a, b) => b.value - a.value)
+            .slice(0, 5)
+    })()
 
     return (
         <div className="space-y-6 max-w-7xl mx-auto">
@@ -76,8 +89,6 @@ export default function DepartmentDashboard() {
                     title="Active Cases"
                     value={activeCases}
                     icon={Users}
-                    trend="up"
-                    trendValue="5%"
                 />
                 <MetricCard
                     title="Critical Alerts"
@@ -86,17 +97,14 @@ export default function DepartmentDashboard() {
                     critical={criticalAlerts > 0}
                 />
                 <MetricCard
-                    title="SLA Breaches"
-                    value="2"
+                    title="Total Volume"
+                    value={totalCases}
                     icon={Clock}
-                    critical={true}
                 />
                 <MetricCard
-                    title="Resolution Velocity"
-                    value="82%"
+                    title="Resolution Rate"
+                    value={`${resolutionRate}%`}
                     icon={CheckSquare}
-                    trend="up"
-                    trendValue="12%"
                 />
             </div>
 
@@ -105,7 +113,7 @@ export default function DepartmentDashboard() {
                 {/* Resolution vs Incoming Chart */}
                 <div className="bg-white border border-slate-200 shadow-sm rounded-md overflow-hidden">
                     <div className="p-4 border-b border-slate-100 flex justify-between items-center">
-                        <h3 className="text-lg font-bold text-[#1e40af]">Case Velocity (7 Days)</h3>
+                        <h3 className="text-lg font-bold text-[#1e40af]">Cases by Day of Week</h3>
                     </div>
                     <div className="p-4 h-[300px]">
                         <ResponsiveContainer width="100%" height="100%">
@@ -130,28 +138,32 @@ export default function DepartmentDashboard() {
                         <h3 className="text-lg font-bold text-[#1e40af]">Issue Distribution Analytics</h3>
                     </div>
                     <div className="p-4 h-[300px] flex items-center justify-center">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <PieChart>
-                                <Pie
-                                    data={categoryDistribution}
-                                    cx="50%"
-                                    cy="50%"
-                                    innerRadius={70}
-                                    outerRadius={100}
-                                    paddingAngle={2}
-                                    dataKey="value"
-                                    stroke="none"
-                                >
-                                    {categoryDistribution.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                    ))}
-                                </Pie>
-                                <RechartsTooltip
-                                    contentStyle={{ backgroundColor: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "8px" }}
-                                    itemStyle={{ color: "#111827" }}
-                                />
-                            </PieChart>
-                        </ResponsiveContainer>
+                        {categoryDistribution.length > 0 ? (
+                            <ResponsiveContainer width="100%" height="100%">
+                                <PieChart>
+                                    <Pie
+                                        data={categoryDistribution}
+                                        cx="50%"
+                                        cy="50%"
+                                        innerRadius={70}
+                                        outerRadius={100}
+                                        paddingAngle={2}
+                                        dataKey="value"
+                                        stroke="none"
+                                    >
+                                        {categoryDistribution.map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                        ))}
+                                    </Pie>
+                                    <RechartsTooltip
+                                        contentStyle={{ backgroundColor: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "8px" }}
+                                        itemStyle={{ color: "#111827" }}
+                                    />
+                                </PieChart>
+                            </ResponsiveContainer>
+                        ) : (
+                            <p className="text-slate-400 text-sm">No complaints yet for this department.</p>
+                        )}
                     </div>
                     <div className="flex justify-center flex-wrap gap-4 mt-2">
                         {categoryDistribution.map((category, idx) => (

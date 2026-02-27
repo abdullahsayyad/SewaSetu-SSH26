@@ -18,7 +18,7 @@ export default function ResolvedCases() {
     }, [])
 
     // Show resolved complaints for this dept
-    const complaints = allComplaints.filter(c => c.aiAnalysis.category === department && c.status === "Resolved")
+    const complaints = allComplaints.filter(c => c.departmentName === department && c.status === "Resolved")
 
     return (
         <div className="max-w-7xl mx-auto space-y-6">
@@ -53,7 +53,7 @@ export default function ResolvedCases() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
                                 <div>
-                                    <h4 className="font-bold text-lg text-[#0B3D91] mb-2">{complaint.aiAnalysis.subCategory}</h4>
+                                    <h3 className="text-2xl font-bold text-[#0B3D91] mb-2">{complaint.aiAnalysis.category_analysis.subcategory}</h3>
                                     <div className="flex items-center text-sm text-slate-600 mb-4 font-medium">
                                         <MapPin className="w-4 h-4 mr-1.5 text-slate-400" />
                                         {complaint.location.address}
