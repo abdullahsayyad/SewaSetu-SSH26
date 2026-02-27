@@ -132,7 +132,7 @@ Complaint Submission
 ## Screenshots
 
 ### Citizen Dashboard
-![Citizen Dashboard Screenshot](./screenshots/citizen-dashboard.png)
+![Citizen Dashboard Screenshot](./screenshots/WhatsApp-Image-2026-02-27-at-6.01.12-AM.jpeg)
 
 ### Department Dashboard
 ![Department Dashboard Screenshot](./screenshots/department-dashboard.png)
