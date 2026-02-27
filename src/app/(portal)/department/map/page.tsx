@@ -50,7 +50,7 @@ export default function DepartmentMap() {
                     <div className="space-y-2.5 text-sm font-medium text-slate-700">
                         <div className="flex items-center"><span className="w-3.5 h-3.5 rounded-full bg-[#DC2626] border-2 border-white shadow-sm mr-2.5"></span> Critical (&gt;75)</div>
                         <div className="flex items-center"><span className="w-3.5 h-3.5 rounded-full bg-[#EA580C] border-2 border-white shadow-sm mr-2.5"></span> High (51-75)</div>
-                        <div className="flex items-center"><span className="w-3.5 h-3.5 rounded-full bg-[#CA8A04] border-2 border-white shadow-sm mr-2.5"></span> Moderate (26-50)</div>
+                        <div className="flex items-center"><span className="w-3.5 h-3.5 rounded-full bg-[#CA8A04] border-2 border-white shadow-sm mr-2.5"></span> Medium (26-50)</div>
                         <div className="flex items-center"><span className="w-3.5 h-3.5 rounded-full bg-[#16A34A] border-2 border-white shadow-sm mr-2.5"></span> Low (0-25)</div>
                     </div>
                 </div>

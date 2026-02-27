@@ -51,7 +51,7 @@ export default function IncomingComplaints() {
                     const level = complaint.aiAnalysis.severity_analysis.severity_level;
                     const isCritical = level === "Critical";
                     const isHigh = level === "High";
-                    const isModerate = level === "Moderate";
+                    const isModerate = level === "Medium";
 
                     const headerBg = isCritical ? "bg-[#cc0000]" : isHigh ? "bg-[#ea580c]" : isModerate ? "bg-[#eab308]" : "bg-[#16a34a]";
                     const bodyBg = isCritical ? "bg-[#fff1f0]" : isHigh ? "bg-[#fff7ed]" : isModerate ? "bg-[#fefce8]" : "bg-[#f0fdf4]";

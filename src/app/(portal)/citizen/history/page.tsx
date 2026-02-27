@@ -69,7 +69,7 @@ export default function ComplaintHistory() {
                                     <Badge variant={
                                         complaint.aiAnalysis.severity_analysis.severity_level === "Critical" ? "critical" :
                                             complaint.aiAnalysis.severity_analysis.severity_level === "High" ? "high" :
-                                                complaint.aiAnalysis.severity_analysis.severity_level === "Moderate" ? "moderate" : "low"
+                                                complaint.aiAnalysis.severity_analysis.severity_level === "Medium" ? "moderate" : "low"
                                     }>
                                         {complaint.aiAnalysis.severity_analysis.severity_level}
                                     </Badge>

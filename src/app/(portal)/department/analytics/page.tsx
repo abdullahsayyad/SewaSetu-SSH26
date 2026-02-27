@@ -191,7 +191,7 @@ export default function AnalyticsDashboard() {
                                             fill={
                                                 entry.name === 'Critical' ? '#DC2626' :
                                                     entry.name === 'High' ? '#EA580C' :
-                                                        entry.name === 'Moderate' ? '#EAB308' : '#10B981'
+                                                        entry.name === 'Medium' ? '#EAB308' : '#10B981'
                                             }
                                         />
                                     ))}

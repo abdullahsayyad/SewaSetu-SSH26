@@ -85,7 +85,7 @@ export async function getComplaints(citizenId?: string): Promise<Complaint[]> {
                     },
                     severity_analysis: {
                         severity_score: ai.risk_score,
-                        severity_level: ai.risk_score > 80 ? "Critical" : ai.risk_score > 50 ? "High" : "Low",
+                        severity_level: c.priority_level ? c.priority_level.charAt(0).toUpperCase() + c.priority_level.slice(1) : "Low",
                         risk_type: "Platform Migrated",
                         matched_keywords: []
                     },
@@ -94,7 +94,7 @@ export async function getComplaints(citizenId?: string): Promise<Complaint[]> {
                     department_probabilities: [{ department: ai.category, probability: 0.9 }],
                     priority_scoring: {
                         priority_score: ai.escalation_score,
-                        risk_tier: ai.risk_score > 80 ? "Critical" : ai.risk_score > 50 ? "High" : "Low",
+                        risk_tier: c.priority_level ? c.priority_level.charAt(0).toUpperCase() + c.priority_level.slice(1) : "Low",
                         explainability: { components: [], total_before_clamp: ai.escalation_score }
                     },
                     processing_time_ms: 100, // mock fallback
@@ -158,14 +158,14 @@ export async function logComplaint(data: any, citizenId?: string) {
                 description: data.description,
                 latitude: data.location.lat,
                 longitude: data.location.lng,
-                priority_level: data.aiAnalysis.priority_scoring.risk_tier === 'Critical' ? 'critical' : data.aiAnalysis.priority_scoring.risk_tier === 'High' ? 'high' : 'medium',
+                priority_level: data.aiAnalysis.severity_analysis.severity_level === 'Critical' ? 'critical' : data.aiAnalysis.severity_analysis.severity_level === 'High' ? 'high' : data.aiAnalysis.severity_analysis.severity_level === 'Medium' ? 'medium' : 'low',
                 status: 'pending',
                 complaint_ai_analysis: {
                     create: {
                         category: data.aiAnalysis.category_analysis.category,
                         sub_category: data.aiAnalysis.category_analysis.subcategory,
                         sentiment_score: data.aiAnalysis.sentiment_analysis.sentiment_score,
-                        risk_score: data.aiAnalysis.priority_scoring.risk_tier === 'Critical' ? 95 : 50,
+                        risk_score: data.aiAnalysis.severity_analysis.severity_score || 50,
                         escalation_score: data.aiAnalysis.priority_scoring.priority_score,
                         extracted_keywords: data.aiAnalysis.extracted_keywords,
                         ai_summary: data.aiAnalysis.summary || "Summary generation offloaded to backend structure.",

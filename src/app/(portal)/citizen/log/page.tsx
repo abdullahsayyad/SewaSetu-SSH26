@@ -178,7 +178,7 @@ export default function LogComplaint() {
                                         <Badge variant={
                                             analysis.severity_analysis.severity_level === "Critical" ? "critical" :
                                                 analysis.severity_analysis.severity_level === "High" ? "high" :
-                                                    analysis.severity_analysis.severity_level === "Moderate" ? "moderate" : "low"
+                                                    analysis.severity_analysis.severity_level === "Medium" ? "moderate" : "low"
                                         }>
                                             {analysis.severity_analysis.severity_level} Priority
                                         </Badge>
