@@ -134,7 +134,7 @@ Complaint Submission
 ## Screenshots
 
 ### Citizen Dashboard
-![Citizen Dashboard](./WhatsApp%20Image%202026-02-27%20at%206.01.12%20AM.jpeg)
+![Citizen Dashboard](./screenshots/image1.png)
 
 ### Department Dashboard
 ![Department Dashboard](./WhatsApp%20Image%202026-02-27%20at%206.15.15%20AM.jpeg)
