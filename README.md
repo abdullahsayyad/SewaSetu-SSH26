@@ -1,75 +1,159 @@
-# 🏛️ SewaSetu: Grievance Intelligence System
+# SewaSetu – Public Grievance Management System
 
-![SewaSetu Banner](./public/banner.png)
+## Overview
 
-SewaSetu is a modern, AI-powered public grievance management portal designed for smart cities and forward-thinking governments. It provides dual-sided platforms for **Citizens** to intuitively report civic issues and **Government Departments** to intelligently route, triage, and resolve those issues at scale.
+SewaSetu is a modern public grievance management platform designed to streamline complaint submission, classification, routing, prioritization, and resolution.  
 
-## ✨ Key Features
+The system replaces slow and manual grievance handling processes with an automated, structured, and priority-driven civic operations workflow.
 
-### 👤 For Citizens
-*   **Intuitive Reporting:** File grievances with rich media attachments (photos, geolocation).
-*   **National Secure Gateway Mock:** Secure OTP-based authentication simulation.
-*   **Interactive Maps:** View a dynamic Mapbox/Leaflet based map pinning the locations of issues.
-*   **Live Tracking:** Monitor the real-time status of reported issues via a personal Grievance Ledger.
+---
 
-### 🏢 For Departments (Nodal Officers)
-*   **AI-Driven Triage:** Automated Risk Assessment and Escalation Scoring powered by simulated NLP models.
-*   **Smart Routing:** Incoming petitions are automatically categorized (Roads, Sanitation, Electricity, etc.) and pushed to the relevant department queue.
-*   **Analytics Dashboard:** Gain insights via real-time Recharts visualizations detailing ticket velocity, SLA adherence, and core issue clusters.
-*   **Efficient Resolution:** Streamlined workflow to review full AI analysis reports and resolve incidents, instantaneously keeping citizens informed.
+## Problem
 
-## 🛠️ Tech Stack
+Existing grievance platforms face several challenges:
 
-*   **Frontend:** [Next.js 14](https://nextjs.org/) (App Router), React, Tailwind CSS
-*   **UI Components:** [shadcn/ui](https://ui.shadcn.com/), Lucide Icons
-*   **Mapping:** Leaflet, React-Leaflet
-*   **Charts:** Recharts
-*   **Backend / Database:** Server Actions, Prisma ORM, PostgreSQL (Neon/Supabase)
+- Manual routing and slow processing
+- Misclassification of complaints
+- No prioritization mechanism
+- Language barriers
+- Data overload for departments
+- Lack of actionable insights
+- Weak escalation tracking
+- Spam and duplicate complaints
 
-## 🚀 Getting Started
+---
 
-To run the SewaSetu portal locally, follow these steps:
+## Solution
 
-### Prerequisites
-*   Node.js 18+
-*   PostgreSQL Database instance
+SewaSetu introduces an intelligent and structured approach to grievance management:
 
-### Installation
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/your-username/sewasetu.git
-    cd sewasetu
-    ```
+- Automated complaint classification and department routing
+- Risk-based priority levels with SLA tracking
+- Structured operational reports for departments
+- Map-based real-time visibility of unresolved issues
+- Citizen upvote mechanism for community-impact prioritization
+- Escalation monitoring and lifecycle transparency
+- Analytics-driven dashboards for performance tracking
 
-2.  **Install dependencies:**
-    ```bash
-    npm install
-    ```
+---
 
-3.  **Environment Setup:**
-    Create a `.env` file in the root directory and add your database URL:
-    ```env
-    DATABASE_URL="postgres://user:password@hostname:port/db_name"
-    ```
+## System Roles
 
-4.  **Run Database Migrations:**
-    ```bash
-    npx prisma generate
-    npx prisma db push
-    ```
+### Citizen
+- Submit complaints in any language
+- Upload optional images
+- Auto-detect or select location
+- View unresolved complaints on map
+- Upvote similar issues
+- Track complaint status
 
-5.  **Start the Development Server:**
-    ```bash
-    npm run dev
-    ```
+### Department Officer
+- View department-specific dashboard
+- Access structured complaint reports
+- Filter by priority and status
+- Resolve complaints and upload reports
+- Monitor SLA and escalation alerts
 
-6.  Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-## 💡 Usage Scenarios
+## Core Features
 
-*   **Citizen Portal:** Navigate to `/citizen/login`. Use any active number/email and OTP (e.g., `9998887776` / `123456`) mapped in your database to log in and report an issue.
-*   **Department Portal:** Navigate to `/department/login`. Select a specific department (e.g., "Electricity") to view securely filtered incoming intelligence and analytics dashboards.
+### Map-Based Monitoring
+- Citizens view all unresolved complaints in their locality
+- Departments view only complaints assigned to them
+- Priority-based color coding
 
-## 📄 License
+### Structured Operational Reports
+Each complaint is converted into a standardized report including:
+- Complaint metadata
+- Location details
+- Issue classification
+- Priority level
+- Risk assessment
+- Suggested action
+- Public engagement metrics
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### Priority & SLA Management
+- Low, Medium, High, Critical classification
+- SLA deadline tracking
+- Escalation level monitoring
+
+### Analytics Dashboard
+- Complaint distribution
+- Resolution performance
+- Escalation trends
+- Department workload insights
+
+---
+
+## Architecture Overview
+
+Complaint Submission  
+→ Automated Classification  
+→ Priority Assignment  
+→ Department Routing  
+→ Resolution Workflow  
+→ Citizen Notification  
+
+---
+
+## Technology Stack
+
+**Frontend**
+- Next.js
+- Tailwind CSS
+- Leaflet / Mapbox
+- Recharts
+
+**Backend**
+- Node.js
+- PostgreSQL
+
+**Prototype AI Layer**
+- Structured classification logic (demo phase)
+
+---
+
+## Database Design (Core Tables)
+
+- users  
+- departments  
+- complaints  
+- complaint_ai_analysis  
+- complaint_upvotes  
+- complaint_status_history  
+- resolution_reports  
+- attachments  
+- escalations  
+- notifications  
+
+---
+
+## Screenshots
+
+### Citizen Dashboard
+![Citizen Dashboard Screenshot](./screenshots/citizen-dashboard.png)
+
+### Department Dashboard
+![Department Dashboard Screenshot](./screenshots/department-dashboard.png)
+
+### Structured Report View
+![Structured Report Screenshot](./screenshots/structured-report.png)
+
+
+
+---
+
+## Future Enhancements
+
+- Real NLP-based classification
+- Semantic duplicate detection
+- Predictive issue clustering
+- Multi-city deployment support
+- Mobile application integration
+
+---
+
+## Hackathon Objective
+
+SewaSetu transforms grievance management from a reactive complaint portal into a structured, accountable, and data-driven civic operations system.
