@@ -137,13 +137,13 @@ Complaint Submission
 ![Citizen Dashboard](./screenshots/image1.png)
 
 ### Department Dashboard
-![Department Dashboard](./WhatsApp%20Image%202026-02-27%20at%206.15.15%20AM.jpeg)
+![Department Dashboard](./screenshots/WhatsApp%20Image%202026-02-27%20at%206.15.15%20AM.jpeg)
 
 ### Analytics Dashboard
-![Analytics Dashboard](./WhatsApp%20Image%202026-02-27%20at%206.16.05%20AM.jpeg)
+![Analytics Dashboard](./screenshots/WhatsApp%20Image%202026-02-27%20at%206.16.05%20AM.jpeg)
 
 ### Structured Report View
-![Structured Report](./WhatsApp%20Image%202026-02-27%20at%206.16.27%20AM.jpeg)
+![Structured Report](./screenshots/WhatsApp%20Image%202026-02-27%20at%206.16.27%20AM.jpeg)
 
 ---
 
